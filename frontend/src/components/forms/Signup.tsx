@@ -20,6 +20,11 @@ const Signup = () => {
         setOpenToast(false);
     };
 
+    const resetForm = () => {
+        setFullname("");
+        setEmail("");
+        setPassword("");
+    }
     async function handleCreateAccount(ev: React.FormEvent<HTMLFormElement>) {
         ev.preventDefault();
         setIsLoading(true);
@@ -32,6 +37,7 @@ const Signup = () => {
             });
             setOpenToast(true);
             setToastStatus("success");
+            resetForm();
         } catch (error) {
             setOpenToast(true);
             setToastStatus("error");
@@ -58,6 +64,7 @@ const Signup = () => {
                     variant="outlined"
                     required
                     color="secondary"
+                    value={fullname}
                     onChange={(e) => setFullname(e.target.value)}
                 />
                 <TextField
@@ -67,6 +74,7 @@ const Signup = () => {
                     label="Email address"
                     required
                     variant="outlined"
+                    value={email}
                     color="secondary"
                     onChange={(e) => setEmail(e.target.value)}
                 />
@@ -77,6 +85,7 @@ const Signup = () => {
                     type="password"
                     required
                     variant="outlined"
+                    value={password}
                     color="secondary"
                     onChange={(e) => setPassword(e.target.value)}
                 />
@@ -103,7 +112,7 @@ const Signup = () => {
                     variant="filled"
                     sx={{ width: "100%" }}
                 >
-                    {toastStatus === "success" ? "Account created successfully" : "Error creating account"}
+                    {toastStatus === "success" ? "Account created successfully" : "Account with this email already exists"}
                 </Alert>
             </Snackbar>
         </div>
