@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
 import cors from "cors";
 import bcrypt from "bcrypt";
 import { User } from "./schemas/User.js";
@@ -35,6 +36,28 @@ app.post("/signup", async (req, res) => {
     }
 });
 
+// login
+
+app.post("/login", async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(401).json({ message: "Invalid credentials" });
+        }
+        const passwordMatch = await checkPassword(password, user.password);
+        if (!passwordMatch) {
+            return res.status(401).json({ message: "Incorrect password" });
+        }
+        res.status(200).json({
+            message: "Login successful",
+            accessToken: generateAccessToken({ id: user._id, email }),
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
 });
@@ -42,4 +65,12 @@ app.listen(process.env.PORT, () => {
 async function hashPassword(password) {
     const saltRounds = 10;
     return bcrypt.hash(password, saltRounds);
+}
+
+async function checkPassword(password, hash) {
+    return bcrypt.compare(password, hash);
+}
+
+function generateAccessToken(user) {
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
 }
