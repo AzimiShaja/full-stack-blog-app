@@ -5,8 +5,8 @@ import image from "../../assets/User.gif";
 const Login = () => {
     const { setIsToLogin } = useContext(AuthStatus);
     return (
-        <div className="h-[calc(100vh-100px)] flex items-center justify-center max-md:px-8">
-            <form className="flex flex-col  gap-3 shadow-xl p-10 border border-gray-300 rounded-lg md:min-w-[500px] max-md:w-full">
+        <div className="h-[calc(100vh-80px)] flex items-center justify-center max-md:px-2">
+            <form className="flex flex-col gap-3 shadow-2xl p-10 border-b-4 border-purple-700 rounded-sm md:min-w-[500px] max-md:w-full">
                 <div className="w-full flex flex-col items-center gap-1 mb-10">
                     <img src={image} className="w-20 h-20" alt="" />
                     <h1 className="md:text-2xl text-xl font-bold">Welcome to GotIdea!</h1>

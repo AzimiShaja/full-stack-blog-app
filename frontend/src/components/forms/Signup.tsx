@@ -12,7 +12,7 @@ const Signup = () => {
     const [toastStatus, setToastStatus] = useState<"success" | "error">();
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-        event
+        event;
         if (reason === "clickaway") {
             return;
         }
@@ -24,7 +24,7 @@ const Signup = () => {
         setFullname("");
         setEmail("");
         setPassword("");
-    }
+    };
     async function handleCreateAccount(ev: React.FormEvent<HTMLFormElement>) {
         ev.preventDefault();
         setIsLoading(true);
@@ -47,10 +47,10 @@ const Signup = () => {
     }
 
     return (
-        <div className="h-[calc(100vh-80px)] flex items-center justify-center max-md:px-8">
+        <div className="h-[calc(100vh-80px)] flex items-center justify-center max-md:px-2">
             <form
                 onSubmit={handleCreateAccount}
-                className="flex flex-col bg-white gap-3 shadow-xl p-10 border border-gray-300 rounded-lg md:min-w-[500px] max-md:w-full"
+                className="flex flex-col bg-white gap-3 shadow-2xl p-10 border-b-4 border-purple-700 rounded-sm md:min-w-[500px] max-md:w-full"
             >
                 <div className="w-full flex flex-col items-center gap-1 mb-10">
                     <img src={image} className="w-20 h-20" alt="" />
@@ -112,7 +112,9 @@ const Signup = () => {
                     variant="filled"
                     sx={{ width: "100%" }}
                 >
-                    {toastStatus === "success" ? "Account created successfully" : "Account with this email already exists"}
+                    {toastStatus === "success"
+                        ? "Account created successfully"
+                        : "Account with this email already exists"}
                 </Alert>
             </Snackbar>
         </div>
