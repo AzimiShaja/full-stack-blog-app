@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 const Header = () => {
     const { isUserLoggedIn } = useContext(AuthStatus);
     const [isOpen, setIsOpen] = useState(false);
-    const [tab, setTab] = useState(0);
+    const [tab, setTab] = useState(NaN);
     const navigate = useNavigate();
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         event;
@@ -60,7 +60,7 @@ const Header = () => {
             )}
             <About isOpen={isOpen} setIsOpen={setIsOpen} />
             {isUserLoggedIn && (
-                <div className="max-md:hidden">
+                <div onClick={() => { navigate("/profile"); setTab(NaN) }} className="max-md:hidden">
                     <IconButton color="secondary">
                         <Avatar
                             src={av1}

@@ -5,7 +5,7 @@ import image from "../../assets/User.gif";
 import { UserStatus } from "../context/UserContext";
 import axios from "axios";
 const Login = () => {
-    const { setEmail, setPassword, password, email } = useContext(UserStatus);
+    const { setEmail, setPassword, password, email, setBio, setFullname } = useContext(UserStatus);
     const { setIsToLogin, setIsUserLoggedIn } = useContext(AuthStatus);
     const [isLoading, setIsLoading] = useState(false);
     const [openToast, setOpenToast] = useState(false);
@@ -32,6 +32,9 @@ const Login = () => {
 
 
             localStorage.setItem("token", response.data.accessToken);
+            setFullname(response.data.user.fullname);
+            setEmail(response.data.user.email);
+            setBio(response.data.user.bio);
             setOpenToast(true);
             setToastStatus("success");
             setIsUserLoggedIn(true);

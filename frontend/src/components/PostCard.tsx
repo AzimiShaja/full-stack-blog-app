@@ -55,7 +55,7 @@ const PostCard = ({ post, isLoading }: Props) => {
         );
     else
         return (
-            <div className="w-full flex flex-col gap-4 rounded-xl justify-between px-10 py-3 shadow-lg pb-10">
+            <div className="w-full flex flex-col gap-4 rounded-xl justify-between px-10 py-3 shadow-lg">
                 <div className="flex justify-between w-full">
                     <div className="flex items-center gap-3 cursor-pointer">
                         <Avatar alt="Remy Sharp" src={randomAvatar()} />
@@ -72,12 +72,12 @@ const PostCard = ({ post, isLoading }: Props) => {
                 </div>
                 <div className="flex justify-between">
                     <div className="flex items-center">
-                        <p>{post.likes}</p>
                         <Icon name="Like" icon={<AiOutlineLike size={20} />} />
+                        <p>{post.likes}</p>
                     </div>
                     <div className="flex items-center">
-                        <p>{post.noOfcomments}</p>
                         <Icon name="Comment" icon={<GoComment size={20} />} />
+                        <p>{post.noOfcomments}</p>
                     </div>
                     <div>
                         <Icon name="Share" icon={<IoBookmarkOutline size={20} />} />

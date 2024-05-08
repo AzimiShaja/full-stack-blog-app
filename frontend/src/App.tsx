@@ -8,6 +8,7 @@ import Home from "./components/routes/Home";
 import Search from "./components/routes/Search";
 import CreatePost from "./components/routes/CreatePost";
 import Favorites from "./components/routes/Favorites";
+import Profile from "./components/routes/Profile";
 
 const App = () => {
   const { isToLogin, isUserLoggedIn } = useContext(AuthStatus);
@@ -31,6 +32,7 @@ const App = () => {
         <Route path="/search" element={<Search />} />
         <Route path="/createpost" element={<CreatePost />} />
         <Route path="/favorites" element={<Favorites />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </>
   );
