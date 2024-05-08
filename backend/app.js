@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import cors from "cors";
 import bcrypt from "bcrypt";
 import { User } from "./schemas/User.js";
+import { Post } from "./schemas/Post.js";
 const app = express();
 dotenv.config();
 app.use(cors());
@@ -43,7 +44,6 @@ app.post("/signup", async (req, res) => {
 });
 
 // login
-
 app.post("/login", async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -57,9 +57,28 @@ app.post("/login", async (req, res) => {
         }
         res.status(200).json({
             message: "Login successful",
-            user,
+            user: {
+                id: user._id,
+                fullname: user.fullname,
+                email: user.email,
+                age: user.age,
+                gender: user.gender,
+                posts: user.posts,
+                favorites: user.favorites,
+                likedPosts: user.likedPosts,
+            },
             accessToken: generateAccessToken({ id: user._id, email }),
         });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// get all posts
+app.get("/get-posts", authenticateToken, async (req, res) => {
+    try {
+        const posts = await Post.find();
+        res.status(200).json({ message: "Posts fetched successfully", posts });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -80,4 +99,19 @@ async function checkPassword(password, hash) {
 
 function generateAccessToken(user) {
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
+}
+
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+    if (token == null) {
+        return res.sendStatus(401);
+    }
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+        if (err) {
+            return res.sendStatus(403);
+        }
+        req.user = user;
+        next();
+    });
 }
