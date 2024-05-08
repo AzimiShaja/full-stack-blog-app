@@ -106,10 +106,10 @@ app.post("/create-post", authenticateToken, async (req, res) => {
 
 // get user posts
 
-app.get("/get-user-posts", authenticateToken, async (req, res) => {
+app.post("/get-user-posts", authenticateToken, async (req, res) => {
     try {
         const { fullname } = req.body;
-        const posts = await Post.find({ author: fullname });
+        const posts = await Post.find({ author: fullname }).sort({ date: -1 });
         res.status(200).json({ message: "Posts fetched successfully", posts });
     } catch (error) {
         res.status(500).json({ message: error.message });
