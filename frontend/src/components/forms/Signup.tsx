@@ -1,16 +1,29 @@
-import { Alert, Button, LinearProgress, Snackbar, TextField } from "@mui/material";
-import { useContext, useState } from "react";
+import { Alert, Button, LinearProgress, MenuItem, Select, Snackbar, TextField } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
 import { AuthStatus } from "../context/AuthContext";
 import image from "../../assets/User.gif";
 import { UserStatus } from "../context/UserContext";
 import axios from "axios";
 const Signup = () => {
-    const { fullname, email, password, setFullname, setEmail, setPassword } = useContext(UserStatus);
+    const {
+        fullname,
+        email,
+        password,
+        setFullname,
+        setEmail,
+        setPassword,
+        gender,
+        setGender,
+        age,
+        setAge,
+        confirmPassword,
+        setConfirmPassword,
+    } = useContext(UserStatus);
     const { setIsToLogin } = useContext(AuthStatus);
     const [isLoading, setIsLoading] = useState(false);
     const [openToast, setOpenToast] = useState(false);
     const [toastStatus, setToastStatus] = useState<"success" | "error">();
-
+    const [isPasswordMatch, setIsPasswordMatch] = useState(false);
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         event;
         if (reason === "clickaway") {
@@ -24,6 +37,9 @@ const Signup = () => {
         setFullname("");
         setEmail("");
         setPassword("");
+        setConfirmPassword("");
+        setGender("Select Gender");
+        setAge("");
     };
     async function handleCreateAccount(ev: React.FormEvent<HTMLFormElement>) {
         ev.preventDefault();
@@ -38,6 +54,11 @@ const Signup = () => {
             setOpenToast(true);
             setToastStatus("success");
             resetForm();
+
+            setTimeout(() => {
+                setIsToLogin(true);
+            }, 2000)
+
         } catch (error) {
             setOpenToast(true);
             setToastStatus("error");
@@ -46,11 +67,20 @@ const Signup = () => {
         }
     }
 
+    useEffect(() => {
+        if (password === confirmPassword) {
+            setIsPasswordMatch(true);
+        } else {
+            setIsPasswordMatch(false);
+        }
+    }, [password, confirmPassword]);
+
     return (
         <div className="h-[calc(100vh-80px)] flex items-center justify-center max-md:px-2">
             <form
                 onSubmit={handleCreateAccount}
-                className="flex flex-col bg-white gap-3 shadow-2xl p-10 border-b-4 border-purple-700 rounded-sm md:min-w-[500px] max-md:w-full"
+                className={`flex flex-col ${isLoading && "animate-pulse"
+                    } bg-white gap-3 shadow-2xl p-10 border-b-4 border-purple-700 rounded-sm md:min-w-[500px] max-md:w-full`}
             >
                 <div className="w-full flex flex-col items-center gap-1 mb-10">
                     <img src={image} className="w-20 h-20" alt="" />
@@ -67,6 +97,36 @@ const Signup = () => {
                     value={fullname}
                     onChange={(e) => setFullname(e.target.value)}
                 />
+                <div className="flex gap-2 w-full justify-between">
+                    <Select
+                        size="small"
+                        sx={{ width: "100%" }}
+                        value={gender}
+                        color="secondary"
+                        onChange={(ev) => {
+                            setGender(ev.target.value as string);
+                        }}
+                    >
+                        <MenuItem disabled value={"Select Gender"}>
+                            Select Gender
+                        </MenuItem>
+                        <MenuItem value={"male"}>Male</MenuItem>
+                        <MenuItem value={"female"}>Female</MenuItem>
+                        <MenuItem value={"other"}>Other</MenuItem>
+                    </Select>
+                    <TextField
+                        id="outlined-basic"
+                        size="small"
+                        sx={{ width: "100%" }}
+                        label="Age"
+                        type="number"
+                        required
+                        variant="outlined"
+                        value={age}
+                        color="secondary"
+                        onChange={(e) => setAge(e.target.value)}
+                    />
+                </div>
                 <TextField
                     id="outlined-basic"
                     size="small"
@@ -89,8 +149,19 @@ const Signup = () => {
                     color="secondary"
                     onChange={(e) => setPassword(e.target.value)}
                 />
+                <TextField
+                    id="outlined-basic"
+                    size="small"
+                    label="Confirm Password"
+                    type="password"
+                    required
+                    variant="outlined"
+                    value={confirmPassword}
+                    color={isPasswordMatch ? "secondary" : "error"}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                />
                 {isLoading && <LinearProgress color="secondary" />}
-                <Button type="submit" color="secondary" variant="contained">
+                <Button disabled={!isPasswordMatch || isLoading} type="submit" color="secondary" variant="contained">
                     Create Account
                 </Button>
                 <p className="text-center font-light">
@@ -113,7 +184,7 @@ const Signup = () => {
                     sx={{ width: "100%" }}
                 >
                     {toastStatus === "success"
-                        ? "Account created successfully"
+                        ? "Account created successfully, please login"
                         : "Account with this email already exists"}
                 </Alert>
             </Snackbar>
