@@ -84,6 +84,38 @@ app.get("/get-posts", authenticateToken, async (req, res) => {
     }
 });
 
+// create post
+app.post("/create-post", authenticateToken, async (req, res) => {
+    try {
+        const { title, content, author } = req.body;
+        const post = new Post({
+            title,
+            content,
+            author,
+            date: new Date(),
+            likes: 0,
+            noOfcomments: 0,
+            comments: [],
+        });
+        await post.save();
+        res.status(201).json({ message: "Post created successfully" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// get user posts
+
+app.get("/get-user-posts", authenticateToken, async (req, res) => {
+    try {
+        const { fullname } = req.body;
+        const posts = await Post.find({ author: fullname });
+        res.status(200).json({ message: "Posts fetched successfully", posts });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
 });
