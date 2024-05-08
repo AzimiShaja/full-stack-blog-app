@@ -77,7 +77,7 @@ app.post("/login", async (req, res) => {
 // get all posts
 app.get("/get-posts", authenticateToken, async (req, res) => {
     try {
-        const posts = await Post.find();
+        const posts = await Post.find().sort({ date: -1 });
         res.status(200).json({ message: "Posts fetched successfully", posts });
     } catch (error) {
         res.status(500).json({ message: error.message });
