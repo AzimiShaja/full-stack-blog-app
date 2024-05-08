@@ -23,11 +23,17 @@ mongoose
 
 app.post("/signup", async (req, res) => {
     try {
-        const { fullname, email, password } = req.body;
+        const { fullname, email, password, age, gender } = req.body;
         const user = new User({
             fullname,
             email,
             password: await hashPassword(password),
+            age,
+            gender,
+            posts: [],
+            favorites: [],
+            likedPosts: [],
+            createdAt: new Date(),
         });
         await user.save();
         res.status(201).json({ message: "User created successfully" });
