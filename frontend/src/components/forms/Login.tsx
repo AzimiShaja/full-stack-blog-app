@@ -31,7 +31,7 @@ const Login = () => {
             });
 
 
-            console.log(response.data);
+            localStorage.setItem("token", response.data.accessToken);
             setOpenToast(true);
             setToastStatus("success");
             setIsUserLoggedIn(true);
@@ -42,7 +42,6 @@ const Login = () => {
             setIsLoading(false);
         }
     }
-
     return (
         <div className="h-[calc(100vh-80px)] flex items-center justify-center max-md:px-2">
             <form onSubmit={handleLogin} className={`flex flex-col ${isLoading && "animate-pulse"} gap-3 shadow-2xl p-10 border-b-4 border-purple-700 rounded-sm md:min-w-[500px] max-md:w-full`}>

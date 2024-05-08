@@ -2,7 +2,7 @@ import { GiTeamIdea } from "react-icons/gi";
 import About from "./Dialogs/About";
 import { useContext, useState } from "react";
 import { AuthStatus } from "./context/AuthContext";
-import { Avatar, Tab, Tabs, Tooltip } from "@mui/material";
+import { Avatar, IconButton, Tab, Tabs, Tooltip } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { IoCreateOutline } from "react-icons/io5";
@@ -20,8 +20,8 @@ const Header = () => {
     };
 
     return (
-        <div className="flex justify-around items-center max-md:justify-between p-5 gap-5">
-            <h1 className="text-3xl font-pacifico cursor-pointer hover:text-purple-700 transition-all font-bold flex items-center justify-center gap-2">
+        <div className="flex sticky top-0 z-50 justify-around items-center max-md:justify-center p-5 gap-5">
+            <h1 className="text-3xl font-pacifico max-md:hidden cursor-pointer hover:text-purple-700 transition-all font-bold flex items-center justify-center gap-2">
                 <GiTeamIdea size={40} />
                 {isUserLoggedIn ? "" : "gotIdea"}
             </h1>
@@ -60,7 +60,16 @@ const Header = () => {
             )}
             <About isOpen={isOpen} setIsOpen={setIsOpen} />
             {isUserLoggedIn && (
-                <Avatar src={av1} alt="avatar" sx={{ width: 35, height: 35 }} className="cursor-pointer" />
+                <div className="max-md:hidden">
+                    <IconButton color="secondary">
+                        <Avatar
+                            src={av1}
+                            alt="avatar"
+                            sx={{ width: 35, height: 35 }}
+                            className="cursor-pointer"
+                        />
+                    </IconButton>
+                </div>
             )}
         </div>
     );

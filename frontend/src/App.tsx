@@ -24,15 +24,15 @@ const App = () => {
   };
 
   return (
-    <div>
+    <>
       <Header />
       <Routes>
-        <Route path="/" element={<div>{findPath()}</div>} />
+        <Route path="/" element={findPath()} />
         <Route path="/search" element={<Search />} />
         <Route path="/createpost" element={<CreatePost />} />
         <Route path="/favorites" element={<Favorites />} />
       </Routes>
-    </div>
+    </>
   );
 };
 
