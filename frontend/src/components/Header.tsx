@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 const Header = () => {
     const { isUserLoggedIn } = useContext(AuthStatus);
     const [isOpen, setIsOpen] = useState(false);
-    const [tab, setTab] = useState(NaN);
+    const [tab, setTab] = useState(0);
     const navigate = useNavigate();
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         event;
