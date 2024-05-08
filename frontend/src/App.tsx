@@ -5,6 +5,9 @@ import { useContext } from "react";
 import Login from "./components/forms/Login";
 import { AuthStatus } from "./components/context/AuthContext";
 import Home from "./components/routes/Home";
+import Search from "./components/routes/Search";
+import CreatePost from "./components/routes/CreatePost";
+import Favorites from "./components/routes/Favorites";
 
 const App = () => {
   const { isToLogin, isUserLoggedIn } = useContext(AuthStatus);
@@ -25,6 +28,9 @@ const App = () => {
       <Header />
       <Routes>
         <Route path="/" element={<div>{findPath()}</div>} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/createpost" element={<CreatePost />} />
+        <Route path="/favorites" element={<Favorites />} />
       </Routes>
     </div>
   );

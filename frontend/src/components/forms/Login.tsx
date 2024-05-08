@@ -30,12 +30,14 @@ const Login = () => {
                 password,
             });
 
-            localStorage.setItem("token", response.data.accessToken);
+
+            console.log(response.data);
             setOpenToast(true);
             setToastStatus("success");
             setIsUserLoggedIn(true);
         } catch (error) {
-            console.log(error);
+            setOpenToast(true);
+            setToastStatus("error");
         } finally {
             setIsLoading(false);
         }

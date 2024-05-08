@@ -8,3 +8,7 @@
 .nav-links li {
   @apply cursor-pointer hover:text-purple-700 transition-all;
 }
+.main {
+  @apply h-[calc(100vh-90px)] grid;
+  grid-template-columns: 400px 1fr 400px;
+}
