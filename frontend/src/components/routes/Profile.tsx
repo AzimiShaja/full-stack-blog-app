@@ -2,6 +2,8 @@ import { useContext, useState } from "react";
 import { UserStatus } from "../context/UserContext";
 import av1 from "../../assets/avatars/av1.jpg";
 import { Avatar, Button, Tab, Tabs } from "@mui/material";
+import UserPosts from "../UserPosts";
+import UserLikedPosts from "../UserLikedPosts";
 const Profile = () => {
     const { fullname, email, posts, favorites, likedPosts } = useContext(UserStatus);
     const [value, setValue] = useState(0);
@@ -40,8 +42,11 @@ const Profile = () => {
                         onChange={handleChange}
                     >
                         <Tab sx={{ width: "100%" }} label="Posts" />
-                        <Tab sx={{ width: "100%" }} label="Favorites" />
+                        <Tab sx={{ width: "100%" }} label="Liked" />
                     </Tabs>
+                </div>
+                <div className="w-full">
+                    {value === 0 ? <UserPosts /> : <UserLikedPosts />}
                 </div>
             </div>
         </div>

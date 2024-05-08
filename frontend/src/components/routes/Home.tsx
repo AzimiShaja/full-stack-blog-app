@@ -6,7 +6,7 @@ export type IComment = {
     author: string;
     content: string;
 }
-type IPost = {
+export type IPost = {
     id: number;
     title: string;
     content: string;
@@ -19,7 +19,7 @@ type IPost = {
 };
 const Home = () => {
     const [posts, setPosts] = useState<IPost[]>([] as IPost[]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     async function getPosts() {
         setIsLoading(true);
@@ -38,7 +38,9 @@ const Home = () => {
         } catch (error) {
             console.log(error);
         } finally {
-            setIsLoading(false);
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 1000)
         }
     }
 
