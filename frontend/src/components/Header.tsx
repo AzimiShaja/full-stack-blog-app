@@ -6,7 +6,6 @@ import { Avatar, IconButton, Tab, Tabs, Tooltip } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { IoCreateOutline } from "react-icons/io5";
-import SearchIcon from "@mui/icons-material/Search";
 import av1 from "../assets/avatars/av1.jpg";
 import { useNavigate } from "react-router-dom";
 const Header = () => {
@@ -23,7 +22,7 @@ const Header = () => {
         <div className="flex sticky top-0 z-50 justify-around items-center max-md:justify-center p-5 gap-5">
             <h1 className="text-3xl font-pacifico max-md:hidden cursor-pointer hover:text-purple-700 transition-all font-bold flex items-center justify-center gap-2">
                 <GiTeamIdea size={40} />
-                {isUserLoggedIn ? "" : "gotIdea"}
+                gotIdea
             </h1>
 
             {isUserLoggedIn ? (
@@ -31,21 +30,18 @@ const Header = () => {
                     <Tooltip title="Home">
                         <Tab icon={<HomeIcon />} aria-label="home" onClick={() => navigate("/")} />
                     </Tooltip>
-                    <Tooltip title="Search">
-                        <Tab icon={<SearchIcon />} aria-label="person" onClick={() => navigate("/search")} />
+                    <Tooltip title="Favorites">
+                        <Tab
+                            icon={<FavoriteIcon />}
+                            onClick={() => navigate("/favorites")}
+                            aria-label="favorite"
+                        />
                     </Tooltip>
                     <Tooltip title="Create">
                         <Tab
                             icon={<IoCreateOutline size={25} className="mb-1" />}
                             onClick={() => navigate("/createpost")}
                             aria-label="create"
-                        />
-                    </Tooltip>
-                    <Tooltip title="Favorites">
-                        <Tab
-                            icon={<FavoriteIcon />}
-                            onClick={() => navigate("/favorites")}
-                            aria-label="favorite"
                         />
                     </Tooltip>
                 </Tabs>
@@ -60,7 +56,7 @@ const Header = () => {
             )}
             <About isOpen={isOpen} setIsOpen={setIsOpen} />
             {isUserLoggedIn && (
-                <div onClick={() => { navigate("/profile"); setTab(NaN) }} className="max-md:hidden">
+                <div onClick={() => { navigate("/profile"); setTab(NaN) }} className="">
                     <IconButton color="secondary">
                         <Avatar
                             src={av1}

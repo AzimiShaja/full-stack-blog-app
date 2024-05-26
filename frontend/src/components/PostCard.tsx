@@ -1,39 +1,19 @@
 import { Avatar, IconButton, Skeleton, Tooltip } from "@mui/material";
 import av1 from "../assets/avatars/av1.jpg";
 import av2 from "../assets/avatars/av2.jpg";
-import av3 from "../assets/avatars/av3.jpg";
-import av4 from "../assets/avatars/av4.jpg";
-import { AiOutlineLike } from "react-icons/ai";
+import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 import { GoComment } from "react-icons/go";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { IoBookmarkOutline } from "react-icons/io5";
-import { IComment } from "./routes/Home";
+import { IPost } from "./routes/Home";
+import { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { UserStatus } from "./context/UserContext";
 type Props = {
     isLoading?: boolean;
-    post: {
-        id: number;
-        title: string;
-        content: string;
-        author: string;
-        date: string;
-        likes: number;
-        noOfcomments: number;
-        comments: IComment[];
-    };
-};
-
-const randomAvatar = () => {
-    const random = Math.floor(Math.random() * 4);
-    switch (random) {
-        case 0:
-            return av1;
-        case 1:
-            return av2;
-        case 2:
-            return av3;
-        case 3:
-            return av4;
-    }
+    post: IPost;
+    editable: boolean;
+    refetch: () => void
 };
 
 const Icon = ({ name, icon }: { name: string; icon: any }) => {
