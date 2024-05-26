@@ -24,7 +24,35 @@ const Icon = ({ name, icon }: { name: string; icon: any }) => {
     );
 };
 
-const PostCard = ({ post, isLoading }: Props) => {
+const PostCard = ({ post, isLoading, editable, refetch }: Props) => {
+    const [isLiked, setIsLiked] = useState(false);
+    const { likedPosts } = useContext(UserStatus);
+    const { fullname } = useContext(UserStatus);
+
+
+    useEffect(() => {
+        // Check if the post is liked by the user
+        setIsLiked(likedPosts.includes(post._id));
+    }, [likedPosts, post._id]);
+
+    async function likePost() {
+        try {
+            const api = import.meta.env.VITE_API_URL;
+            await axios.post(`${api}/${isLiked ? "dislike-post" : "like-post"}`, {
+                postId: post._id,
+                fullname,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            })
+            setIsLiked(!isLiked);
+            refetch();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     if (isLoading)
         return (
             <div className="w-full flex flex-col gap-3">
@@ -38,21 +66,25 @@ const PostCard = ({ post, isLoading }: Props) => {
             <div className="w-full flex flex-col gap-4 rounded-xl justify-between px-10 py-3 shadow-lg">
                 <div className="flex justify-between w-full">
                     <div className="flex items-center gap-3 cursor-pointer">
-                        <Avatar alt="Remy Sharp" src={randomAvatar()} />
+                        <Avatar alt="Remy Sharp" src={av1 || av2} />
                         <div className="flex flex-col">
                             <h1 className="font-bold">{post.author}</h1>
                             <p className="text-sm font-light text-gray-400">{post.date}</p>
                         </div>
                     </div>
-                    <Icon name="More" icon={<MoreVertIcon />} />
+                    {editable && <Icon name="More" icon={<MoreVertIcon />} />}
                 </div>
                 <div className="flex flex-col gap-4 mt-4">
                     <h1 className="text-xl font-bold">{post.title}</h1>
-                    <p className="text-sm leading-6">{post.content}</p>
+                    <p className="text-sm leading-6 text-gray-500">{post.content}</p>
                 </div>
                 <div className="flex justify-between">
                     <div className="flex items-center">
-                        <Icon name="Like" icon={<AiOutlineLike size={20} />} />
+                        <div onClick={likePost}>
+                            {" "}
+                            <Icon name="Like" icon={isLiked ? <AiFillLike size={20} /> : <AiOutlineLike size={20} />} />
+                        </div>
+
                         <p>{post.likes}</p>
                     </div>
                     <div className="flex items-center">
@@ -60,10 +92,10 @@ const PostCard = ({ post, isLoading }: Props) => {
                         <p>{post.noOfcomments}</p>
                     </div>
                     <div>
-                        <Icon name="Share" icon={<IoBookmarkOutline size={20} />} />
+                        <Icon name="bookmark" icon={<IoBookmarkOutline size={20} />} />
                     </div>
                 </div>
-            </div>
+            </div >
         );
 };
 

@@ -9,6 +9,6 @@
   @apply cursor-pointer hover:text-purple-700 transition-all;
 }
 .main {
-  @apply h-[calc(100vh-100px)] xl:grid;
+  @apply h-[calc(100vh-93px)] xl:grid;
   grid-template-columns: 450px 1fr 450px;
 }

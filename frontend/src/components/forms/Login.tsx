@@ -5,7 +5,7 @@ import image from "../../assets/User.gif";
 import { UserStatus } from "../context/UserContext";
 import axios from "axios";
 const Login = () => {
-    const { setEmail, setPassword, password, email, setBio, setFullname } = useContext(UserStatus);
+    const { setEmail, setPassword, password, email, setBio, setFullname, setLikedPosts } = useContext(UserStatus);
     const { setIsToLogin, setIsUserLoggedIn } = useContext(AuthStatus);
     const [isLoading, setIsLoading] = useState(false);
     const [openToast, setOpenToast] = useState(false);
@@ -35,6 +35,7 @@ const Login = () => {
             setFullname(response.data.user.fullname);
             setEmail(response.data.user.email);
             setBio(response.data.user.bio);
+            setLikedPosts(response.data.user.likedPosts)
             setOpenToast(true);
             setToastStatus("success");
             setIsUserLoggedIn(true);
@@ -46,7 +47,7 @@ const Login = () => {
         }
     }
     return (
-        <div className="h-[calc(100vh-80px)] flex items-center justify-center max-md:px-2">
+        <div className="h-[calc(100vh-100px)] flex items-center justify-center max-md:px-2">
             <form onSubmit={handleLogin} className={`flex flex-col ${isLoading && "animate-pulse"} gap-3 shadow-2xl p-10 border-b-4 border-purple-700 rounded-sm md:min-w-[500px] max-md:w-full`}>
                 <div className="w-full flex flex-col items-center gap-1 mb-10">
                     <img src={image} className="w-20 h-20" alt="" />

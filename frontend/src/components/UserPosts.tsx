@@ -1,12 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-import { IPost } from "./routes/Home";
 import axios from "axios";
 import { UserStatus } from "./context/UserContext";
 import PostCard from "./PostCard";
 import moment from "moment";
 
 const UserPosts = () => {
-    const [posts, setPosts] = useState<IPost[]>([] as IPost[]);
+    const { posts, setPosts } = useContext(UserStatus);
     const { fullname } = useContext(UserStatus);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -46,9 +45,9 @@ const UserPosts = () => {
     return (
         <div className="flex flex-col gap-10">
             {posts.map((post) => (
-                <PostCard key={post.id} post={post} isLoading={isLoading} />
+                <PostCard refetch={() => { }} editable={true} key={post._id} post={post} isLoading={isLoading} />
             ))}
-        </div>
+        </div >
     );
 };
 

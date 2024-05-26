@@ -5,7 +5,7 @@ import { Avatar, Button, Tab, Tabs } from "@mui/material";
 import UserPosts from "../UserPosts";
 import UserLikedPosts from "../UserLikedPosts";
 const Profile = () => {
-    const { fullname, email, posts, favorites, likedPosts } = useContext(UserStatus);
+    const { fullname, email } = useContext(UserStatus);
     const [value, setValue] = useState(0);
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         event;
@@ -28,9 +28,6 @@ const Profile = () => {
                         <Button color="secondary" variant="outlined">
                             Edit Profile
                         </Button>
-                        <Button color="error" variant="contained">
-                            Log Out
-                        </Button>
                     </div>
                 </div>
                 <div className="w-full">
@@ -45,9 +42,7 @@ const Profile = () => {
                         <Tab sx={{ width: "100%" }} label="Liked" />
                     </Tabs>
                 </div>
-                <div className="w-full">
-                    {value === 0 ? <UserPosts /> : <UserLikedPosts />}
-                </div>
+                <div className="w-full">{value === 0 ? <UserPosts /> : <UserLikedPosts />}</div>
             </div>
         </div>
     );
