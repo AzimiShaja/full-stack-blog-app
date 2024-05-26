@@ -11,31 +11,35 @@ import Favorites from "./components/routes/Favorites";
 import Profile from "./components/routes/Profile";
 
 const App = () => {
-  const { isToLogin, isUserLoggedIn } = useContext(AuthStatus);
-  const findPath = () => {
-    if (isUserLoggedIn) {
-      return <Home />;
-    } else {
-      if (isToLogin) {
-        return <Login />;
-      } else {
-        return <Signup />;
-      }
-    }
-  };
+    const { isToLogin, isUserLoggedIn } = useContext(AuthStatus);
+    const findPath = () => {
+        if (isUserLoggedIn) {
+            return <Home />;
+        } else {
+            if (isToLogin) {
+                return <Login />;
+            } else {
+                return <Signup />;
+            }
+        }
+    };
 
-  return (
-    <>
-      <Header />
-      <Routes>
-        <Route path="/" element={findPath()} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/createpost" element={<CreatePost />} />
-        <Route path="/favorites" element={<Favorites />} />
-        <Route path="/profile" element={<Profile />} />
-      </Routes>
-    </>
-  );
+    return (
+        <>
+            <Header />
+            <Routes>
+                <Route path="/" element={findPath()} />
+                {isUserLoggedIn && (
+                    <>
+                        <Route path="/search" element={<Search />} />
+                        <Route path="/createpost" element={<CreatePost />} />
+                        <Route path="/favorites" element={<Favorites />} />
+                        <Route path="/profile" element={<Profile />} />
+                    </>
+                )}
+            </Routes>
+        </>
+    );
 };
 
 export default App;
