@@ -31,7 +31,6 @@ app.post("/signup", async (req, res) => {
             password: await hashPassword(password),
             age,
             gender,
-            posts: [],
             favorites: [],
             likedPosts: [],
             createdAt: new Date(),
@@ -63,7 +62,6 @@ app.post("/login", async (req, res) => {
                 email: user.email,
                 age: user.age,
                 gender: user.gender,
-                posts: user.posts,
                 favorites: user.favorites,
                 likedPosts: user.likedPosts,
             },
@@ -111,6 +109,45 @@ app.post("/get-user-posts", authenticateToken, async (req, res) => {
         const { fullname } = req.body;
         const posts = await Post.find({ author: fullname }).sort({ date: -1 });
         res.status(200).json({ message: "Posts fetched successfully", posts });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// like a post
+
+app.post("/like-post", authenticateToken, async (req, res) => {
+    try {
+        const { postId, fullname } = req.body;
+        const post = await Post.findById({ _id: postId });
+        const user = await User.findOne({ fullname });
+        if (!post || !user) {
+            return res.status(404).json({ message: "Post Or User not found" });
+        }
+        post.likes++;
+        user.likedPosts.push(postId);
+        await post.save();
+        await user.save();
+        res.status(200).json({ message: "Post liked successfully", post });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// dislike
+app.post("/dislike-post", authenticateToken, async (req, res) => {
+    try {
+        const { postId, fullname } = req.body;
+        const post = await Post.findById({ _id: postId });
+        const user = await User.findOne({ fullname });
+        if (!post || !user) {
+            return res.status(404).json({ message: "Post Or User not found" });
+        }
+        post.likes--;
+        user.likedPosts.pop(postId);
+        await post.save();
+        await user.save();
+        res.status(200).json({ message: "Post liked successfully", post });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

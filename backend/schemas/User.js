@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-
 const userSchema = new mongoose.Schema({
     fullname: String,
     email: String,
@@ -7,7 +6,6 @@ const userSchema = new mongoose.Schema({
     gender: String,
     age: String,
     bio: String,
-    posts: [String],
     favorites: [String],
     likedPosts: [String],
     createdAt: { type: Date, default: Date.now },
